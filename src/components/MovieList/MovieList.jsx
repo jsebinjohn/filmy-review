@@ -199,6 +199,12 @@ const MovieList = ({ type, title, emoji }) => {
 
       <div className="movie_cards">
         {error && <p className="movie_empty_state">{error}</p>}
+
+        {/* Debug (leave temporarily in production until you see what happens to fetchMovies) */}
+        <p style={{ color: "#ff6b6b", fontSize: 13, margin: "6px 0" }}>
+          DEBUG: type={String(type)} movies={movies.length}
+        </p>
+
         {visibleMovies.map((movie) => (
           <MovieCard
             key={movie.id}

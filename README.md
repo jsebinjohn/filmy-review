@@ -97,3 +97,4 @@ The movie detail page provides:
 - Dedicated movie detail pages are implemented in `src/components/MovieDetail/MovieDetail.jsx`.
 - The README now includes setup instructions, feature descriptions, and architecture details to help users and reviewers understand the project.
 "# movie-review-project" 
+"# movie-review-project" 
