@@ -27,6 +27,52 @@
     padding: 0 12px;
 }
 
+@media (max-width: 980px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 12px 20px;
+    }
+
+    .navbar > h1 {
+        font-size: 24px;
+    }
+
+    .navbar_links {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .navbar_links > a {
+        font-size: 16px;
+        padding: 10px 12px;
+        width: auto;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 640px) {
+    .navbar {
+        padding: 14px 16px;
+    }
+
+    .navbar_links {
+        justify-content: space-between;
+        gap: 6px;
+    }
+
+    .navbar_links > a {
+        flex: 1 1 auto;
+        min-width: 110px;
+        justify-content: center;
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+}
+
 .navbar_emoji {
     width: 20px;
     height: 20px;

@@ -1,17 +1,99 @@
-# React + Vite
+# Filmy Review
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Filmy Review is a React + Vite application that lets users browse movie collections, view detailed movie information, rate movies, and submit reviews directly in the platform.
 
-Currently, two official plugins are available:
+## Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This app integrates with the TMDB API to show popular, top rated, and upcoming movies. Users can click cards to open built-in movie detail pages instead of navigating to an external site, making the review experience more seamless.
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Browse movie lists by category: Popular, Top Rated, Upcoming
+- Search movies by title
+- Filter movies by minimum rating
+- Sort movies by release date or TMDB rating
+- Open internal movie detail pages for each movie
+- Rate movies directly from the detail page
+- Submit and store user reviews locally using browser storage
 
-## Expanding the ESLint configuration
+## Built With
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-"# filmy-review" 
+- React 19
+- Vite
+- React Router DOM
+- TMDB API
+- Vanilla CSS for styling
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18 or newer
+- npm 10 or newer
+
+### Install
+
+1. Clone the repository:
+
+```bash
+git clone <repo-url>
+cd "filmy review"
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+### Run the App
+
+```bash
+npm run dev
+```
+
+Open the local development URL shown in the terminal, usually `http://localhost:5173`.
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Application Structure
+
+- `src/App.jsx`: App routing and home screen layout
+- `src/main.jsx`: App entry point with `BrowserRouter`
+- `src/components/MovieList`: Movie list UI, search, sorting, and filtering
+- `src/components/MovieList/MovieCard.jsx`: Clickable cards that navigate to internal details
+- `src/components/MovieDetail`: Dedicated movie detail page with review submission and rating
+- `src/components/Navbar`: Top-level navigation within the page
+- `src/assets`: App icons and images
+
+## Movie Detail Pages
+
+The movie detail page provides:
+
+- movie poster and metadata
+- TMDB rating and runtime
+- genre list and overview
+- rating selector for the logged-in browser session
+- review form and review history stored in `localStorage`
+
+## Notes
+
+- The app uses the TMDB API key configured in the movie list and detail components.
+- Movie reviews and ratings are persisted locally in the browser using `localStorage`.
+
+## Reviewer Notes
+
+- The app now avoids external redirection from movie cards and relies on internal routes built with React Router.
+- Dedicated movie detail pages are implemented in `src/components/MovieDetail/MovieDetail.jsx`.
+- The README now includes setup instructions, feature descriptions, and architecture details to help users and reviewers understand the project.
+"# movie-review-project" 

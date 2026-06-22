@@ -1,6 +1,9 @@
 .movie_list_header {
+    display: flex;
+    flex-wrap: wrap;
     padding: 10px 30px 20px;
     justify-content: space-between;
+    gap: 14px;
     margin-bottom: 5px;
     margin-top: 28px;
 }
@@ -8,6 +11,7 @@
 .movie_list_heading {
     font-size: 26px;
     color: var(--heading_color);
+    flex: 1 1 220px;
 }
 
 .movie_filter {
@@ -38,9 +42,66 @@
     font-size: 16px;
     font-weight: 500;
     font-family: inherit;
-    height: 30px;
-    padding: 0 5px;
-    margin: 0 10px;
+    height: 36px;
+    padding: 0 10px;
+    margin: 0 10px 0 0;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--body_color);
+    min-width: 140px;
+}
+
+.movie_sorting option {
+    color: var(--body_color);
+    background-color: var(--body_background);
+}
+
+.movie_sorting:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 2px rgba(255, 228, 0, 0.18);
+}
+
+.sort_group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.sort_label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--body_color);
+}
+
+.sort_label select {
+    min-width: 140px;
+}
+
+.movie_filter {
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+}
+
+.movie_filter_item {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.movie_filter_item.active {
+    background: rgba(255, 228, 0, 0.18);
+    color: #ffe400;
+}
+
+@media (min-width: 760px) {
+    .sort_group {
+        gap: 12px;
+    }
 }
 
 .movie_search_bar {
@@ -50,7 +111,59 @@
     color: var(--text_color);
     font: inherit;
     padding: 8px 12px;
-    min-width: 240px;
+    min-width: 220px;
+    width: auto;
+    flex: 1 1 320px;
+    max-width: 420px;
+}
+
+.movie_list_fs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    flex: 1 1 100%;
+    justify-content: flex-end;
+}
+
+.sort_group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.sort_label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--body_color);
+    font-size: 13px;
+}
+
+.sort_label select,
+.movie_sorting {
+    min-width: 140px;
+    max-width: 220px;
+}
+
+.movie_filter {
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+}
+
+.movie_filter_item {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.movie_filter_item.active {
+    background: rgba(255, 228, 0, 0.18);
+    color: #ffe400;
 }
 
 .movie_empty_state {
@@ -62,12 +175,83 @@
 
 .movie_cards {
     display: grid;
-    grid-template-columns: repeat(5, 210px);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 18px 20px;
     justify-content: center;
     justify-items: center;
     align-items: stretch;
-    width: fit-content;
-    max-width: 100%;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
+}
+
+@media (max-width: 1080px) {
+    .movie_list_header {
+        padding: 10px 20px 16px;
+    }
+
+    .movie_sorting {
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 760px) {
+    .movie_list_header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .movie_list_heading {
+        font-size: 22px;
+    }
+
+    .movie_search_bar {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .movie_sorting,
+    .sort_label,
+    .movie_filter {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .movie_sorting {
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+    }
+
+    .sort_group {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 520px) {
+    .movie_cards {
+        grid-template-columns: 1fr;
+    }
+
+    .movie_list_heading {
+        font-size: 20px;
+    }
+
+    .movie_sorting,
+    .movie_search_bar {
+        width: 100%;
+    }
+
+    .sort_group {
+        flex-direction: column;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .sort_group .movie_sorting {
+        margin: 0 0 10px;
+    }
 }
