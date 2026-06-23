@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import "./MovieDetail.css";
 import Star from "../../assets/star.png";
+import { fetchWithRetry } from "../../lib/fetchWithRetry";
 
 const fallbackPoster = "/movie.png";
 const API_KEY = "183928bab7fc630ed0449e4f66ec21bd";
@@ -40,19 +41,19 @@ const MovieDetail = () => {
       setImageError(false);
 
       try {
-        const response = await fetch(
+        const response = await fetchWithRetry(
           `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
         );
 
         if (!response.ok) {
-          throw new Error("Unable to load movie details.");
+          throw new Error(`Movie fetch failed: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
 
         // TMDB /movie/{id} does not include credits by default.
         // Fetch credits so cast information is available.
-        const creditsResponse = await fetch(
+        const creditsResponse = await fetchWithRetry(
           `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`
         );
         if (creditsResponse.ok) {

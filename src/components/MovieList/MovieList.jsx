@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./MovieList.css";
 import MovieCard from "./MovieCard";
 import FilterGroup from "./FilterGroup";
+import { fetchWithRetry } from "../../lib/fetchWithRetry";
 
 const API_KEY = "183928bab7fc630ed0449e4f66ec21bd";
 
@@ -23,12 +24,19 @@ const MovieList = ({ type, title, emoji }) => {
       try {
         setError("");
         const [moviesResponse, genresResponse] = await Promise.all([
-          fetch(`https://api.themoviedb.org/3/movie/${type}?api_key=${API_KEY}`),
-          fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`),
+          fetchWithRetry(`https://api.themoviedb.org/3/movie/${type}?api_key=${API_KEY}`),
+          fetchWithRetry(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`),
         ]);
 
-        if (!moviesResponse.ok || !genresResponse.ok) {
-          throw new Error("Unable to load movies.");
+        const failures = [];
+        if (!moviesResponse.ok) {
+          failures.push(`Movies fetch failed: ${moviesResponse.status} ${moviesResponse.statusText}`);
+        }
+        if (!genresResponse.ok) {
+          failures.push(`Genres fetch failed: ${genresResponse.status} ${genresResponse.statusText}`);
+        }
+        if (failures.length) {
+          throw new Error(failures.join(" | "));
         }
 
         const moviesData = await moviesResponse.json();
