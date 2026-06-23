@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./MovieCard.css";
@@ -21,10 +21,6 @@ const MovieCard = ({ movie, userRating = 0, onRate = () => {} }) => {
         : "Overview not available.";
     const posterUrl = getPosterUrl(movie.poster_path);
     const imageSrc = !imageError && posterUrl ? posterUrl : fallbackPoster;
-
-    useEffect(() => {
-        setImageError(false);
-    }, [movie.id, posterUrl]);
 
     return (
         <Link to={`/movie/${movie.id}`} className="movie_card">

@@ -1,5 +1,3 @@
-import React from "react";
-
 import "./Navbar.css";
 import Fire from "../../assets/fire.png";
 import Star from "../../assets/star.png";

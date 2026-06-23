@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import "./MovieDetail.css";
@@ -12,6 +12,13 @@ const getPosterUrl = (posterPath) => {
   return posterPath ? `${TMDB_IMAGE_BASE}/w780${posterPath}` : null;
 };
 
+const getSavedMovieData = (id) => {
+  const saved = JSON.parse(
+    localStorage.getItem("filmy-review-movie-data") || "{}"
+  );
+  return saved[id] || {};
+};
+
 const MovieDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -19,24 +26,14 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [imageError, setImageError] = useState(false);
-  const [userRating, setUserRating] = useState(0);
+  const [userRating, setUserRating] = useState(() => getSavedMovieData(id).rating || 0);
   const [reviewText, setReviewText] = useState("");
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState(() => {
+    const savedReviews = getSavedMovieData(id).reviews;
+    return Array.isArray(savedReviews) ? savedReviews : [];
+  });
 
   useEffect(() => {
-    const saved = JSON.parse(
-      localStorage.getItem("filmy-review-movie-data") || "{}"
-    );
-    const movieData = saved[id] || {};
-
-    if (movieData.rating) {
-      setUserRating(movieData.rating);
-    }
-
-    if (Array.isArray(movieData.reviews)) {
-      setReviews(movieData.reviews);
-    }
-
     const loadMovie = async () => {
       setLoading(true);
       setError("");
@@ -69,11 +66,6 @@ const MovieDetail = () => {
       } finally {
         setLoading(false);
       }
-    };
-
-    // If we successfully fetch a movie, cache it for fallback.
-    const cacheOnceMovieLoaded = () => {
-      if (!movie) return;
     };
 
     loadMovie();

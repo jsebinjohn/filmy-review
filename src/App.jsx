@@ -1,5 +1,4 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useParams } from "react-router-dom";
 
 import "./App.css";
 import Fire from "./assets/fire.png";
@@ -17,13 +16,18 @@ const Home = () => (
     </>
 );
 
+const MovieDetailRoute = () => {
+    const { id } = useParams();
+    return <MovieDetail key={id} />;
+};
+
 const App = () => {
     return (
         <div className="app">
             <Navbar />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/movie/:id" element={<MovieDetail />} />
+                <Route path="/movie/:id" element={<MovieDetailRoute />} />
             </Routes>
         </div>
     );

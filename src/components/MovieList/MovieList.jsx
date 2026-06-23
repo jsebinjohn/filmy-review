@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import "./MovieList.css";
 import MovieCard from "./MovieCard";
@@ -19,40 +19,40 @@ const MovieList = ({ type, title, emoji }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        setError("");
+        const [moviesResponse, genresResponse] = await Promise.all([
+          fetch(`https://api.themoviedb.org/3/movie/${type}?api_key=${API_KEY}`),
+          fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`),
+        ]);
+
+        if (!moviesResponse.ok || !genresResponse.ok) {
+          throw new Error("Unable to load movies.");
+        }
+
+        const moviesData = await moviesResponse.json();
+        const genresData = await genresResponse.json();
+        const genreMap = new Map(
+          (genresData.genres || []).map((genre) => [genre.id, genre.name])
+        );
+
+        setMovies(
+          (moviesData.results || []).map((movie) => ({
+            ...movie,
+            genre_names: (movie.genre_ids || [])
+              .map((genreId) => genreMap.get(genreId))
+              .filter(Boolean),
+          }))
+        );
+      } catch (fetchError) {
+        setError(fetchError.message || "Unable to load movies.");
+        setMovies([]);
+      }
+    };
+
     fetchMovies();
   }, [type]);
-
-  const fetchMovies = async () => {
-    try {
-      setError("");
-      const [moviesResponse, genresResponse] = await Promise.all([
-        fetch(`https://api.themoviedb.org/3/movie/${type}?api_key=${API_KEY}`),
-        fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`),
-      ]);
-
-      if (!moviesResponse.ok || !genresResponse.ok) {
-        throw new Error("Unable to load movies.");
-      }
-
-      const moviesData = await moviesResponse.json();
-      const genresData = await genresResponse.json();
-      const genreMap = new Map(
-        (genresData.genres || []).map((genre) => [genre.id, genre.name])
-      );
-
-      setMovies(
-        (moviesData.results || []).map((movie) => ({
-          ...movie,
-          genre_names: (movie.genre_ids || [])
-            .map((genreId) => genreMap.get(genreId))
-            .filter(Boolean),
-        }))
-      );
-    } catch (fetchError) {
-      setError(fetchError.message || "Unable to load movies.");
-      setMovies([]);
-    }
-  };
 
   const handleFilter = (rate) => {
     setMinRating((prev) => (prev === rate ? 0 : rate));
@@ -199,11 +199,6 @@ const MovieList = ({ type, title, emoji }) => {
 
       <div className="movie_cards">
         {error && <p className="movie_empty_state">{error}</p>}
-
-        {/* Debug (leave temporarily in production until you see what happens to fetchMovies) */}
-        <p style={{ color: "#ff6b6b", fontSize: 13, margin: "6px 0" }}>
-          DEBUG: type={String(type)} movies={movies.length}
-        </p>
 
         {visibleMovies.map((movie) => (
           <MovieCard
