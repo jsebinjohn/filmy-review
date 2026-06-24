@@ -31,23 +31,7 @@ const MovieList = ({ type, title, emoji }) => {
       ]);
 
       if (!moviesResponse.ok || !genresResponse.ok) {
-        // Read response text so the deployed error is actionable (e.g. invalid API key / auth / rate limit)
-        const moviesText = await moviesResponse.text().catch(() => "");
-        const genresText = await genresResponse.text().catch(() => "");
-
-        const parts = [];
-        if (!moviesResponse.ok) {
-          parts.push(
-            `Movies fetch failed: ${moviesResponse.status} ${moviesResponse.statusText}${moviesText ? ` - ${moviesText.slice(0, 300)}` : ""}`
-          );
-        }
-        if (!genresResponse.ok) {
-          parts.push(
-            `Genres fetch failed: ${genresResponse.status} ${genresResponse.statusText}${genresText ? ` - ${genresText.slice(0, 300)}` : ""}`
-          );
-        }
-
-        throw new Error(parts.join(" | ") || "Unable to load movies.");
+        throw new Error("Unable to load movies.");
       }
 
       const moviesData = await moviesResponse.json();
@@ -55,7 +39,6 @@ const MovieList = ({ type, title, emoji }) => {
       const genreMap = new Map(
         (genresData.genres || []).map((genre) => [genre.id, genre.name])
       );
-
 
       setMovies(
         (moviesData.results || []).map((movie) => ({
@@ -215,16 +198,8 @@ const MovieList = ({ type, title, emoji }) => {
       </header>
 
       <div className="movie_cards">
-        {error ? (
-          <p className="movie_empty_state">
-            {error.includes("Failed to fetch") ? "Network error: Failed to fetch from TMDB" : error}
-          </p>
-        ) : null}
+        {error && <p className="movie_empty_state">{error}</p>}
 
-        {/* Show empty-state only when we have no fetch error AND nothing is visible */}
-        {!error && visibleMovies.length === 0 ? (
-          <p className="movie_empty_state">No movies match your filters.</p>
-        ) : null}
 
 
         {visibleMovies.map((movie) => (
@@ -239,6 +214,5 @@ const MovieList = ({ type, title, emoji }) => {
     </section>
   );
 };
-
 
 export default MovieList;

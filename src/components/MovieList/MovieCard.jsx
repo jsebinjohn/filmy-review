@@ -20,7 +20,9 @@ const MovieCard = ({ movie, userRating = 0, onRate = () => {} }) => {
         ? `${movie.overview.slice(0, 100)}...`
         : "Overview not available.";
     const posterUrl = getPosterUrl(movie.poster_path);
-    const imageSrc = !imageError && posterUrl ? posterUrl : fallbackPoster;
+    const isFallback = imageError || !posterUrl;
+    const imageSrc = isFallback ? fallbackPoster : posterUrl;
+
 
     useEffect(() => {
         setImageError(false);
@@ -31,9 +33,10 @@ const MovieCard = ({ movie, userRating = 0, onRate = () => {} }) => {
             <img
                 src={imageSrc}
                 alt={`${title} poster`}
-                className={`movie_poster ${imageSrc === fallbackPoster ? "movie_poster_fallback" : ""}`}
+                className={`movie_poster ${isFallback ? "movie_poster_fallback" : ""}`}
                 onError={() => setImageError(true)}
             />
+
 
             <div className="movie_details">
                 <h3 className="movie_details_heading">{title}</h3>
